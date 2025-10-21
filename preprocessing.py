@@ -8,10 +8,10 @@ import kagglehub
 
 # Overrides Kaggle default download directory for my own
 os.environ['KAGGLEHUB_CACHE'] = "/Users/steve/Documents/Files/code/generative_transformer/dataset"
-FILES_PATH = "/Users/steve/Documents/Files/code/generative_transformer/dataset/datasets/rtatman/state-of-the-union-corpus-1989-2017/versions/3"
+FILES_PATH = "/Users/steve/Documents/Files/code/generative_transformer/data/datasets/rtatman/state-of-the-union-corpus-1989-2017/versions/3"
 
-if not os.path.exists("dataset"):
-    os.makedirs("dataset")
+if not os.path.exists("data"):
+    os.makedirs("data")
     path = kagglehub.dataset_download("rtatman/state-of-the-union-corpus-1989-2017")
 
 text = ""
