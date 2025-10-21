@@ -1,0 +1,1 @@
+This is my Repository to follow along Andrej Karpathy's YouTube video on building a transformer from scratch. See [here](https://www.youtube.com/watch?v=kCc8FmEb1nY).
