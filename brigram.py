@@ -22,6 +22,7 @@ data = torch.tensor(encode(text), dtype=torch.long)
 n = int(0.9 * len(data))
 train_data = data[:n]
 val_data = data[n:]
+n_embd = 32
 
 # Training hyperparameters
 torch.manual_seed(1234)
@@ -58,12 +59,20 @@ def estimate_loss():
 
 class BigramLanguageModel(nn.Module):
 
-    def __init__(self, vocab_size):
+    def __init__(self):
         super().__init__()
-        self.token_embedding_table = nn.Embedding(vocab_size, vocab_size)
+        self.token_embedding_table = nn.Embedding(vocab_size, n_embd)
+        self.position_embedding_table = nn.Embedding(BLOCK_SIZE, n_embd)
+        self.lm_head = nn.Linear(n_embd, vocab_size)
 
     def forward(self, idx, targets=None):
-        logits = self.token_embedding_table(idx)
+
+        B, T = idx.shape
+        # This gets the position embeddings for each token in the sequence
+        pos_emb = self.position_embedding_table(torch.arange(T, device=DEVICE))
+        tok_emb = self.token_embedding_table(idx)
+        x = tok_emb + pos_emb
+        logits = self.lm_head(x)
 
         if targets is None:
             loss = None
@@ -85,7 +94,7 @@ class BigramLanguageModel(nn.Module):
         return idx
 
 
-model = BigramLanguageModel(vocab_size)
+model = BigramLanguageModel()
 m = model.to(DEVICE)
 
 optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
